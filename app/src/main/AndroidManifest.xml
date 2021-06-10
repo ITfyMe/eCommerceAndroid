@@ -12,12 +12,36 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ECommerce"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.SampleActivity">
+        <activity android:name=".activity.TrackOrderActivity"
+            android:label="Track Order"></activity>
+        <activity android:name=".activity.MyOrderActivity"
+            android:label="My Order">
+        </activity>
+        <activity android:name=".activity.PaymentActivity"
+            android:label="Payment">
+        </activity>
+        <activity android:name=".activity.MyCartActivity"
+            android:label="My Cart">
+        </activity>
+        <activity android:name=".activity.LoginActivity"
+            android:label="Login">
+        </activity>
+        <activity android:name=".activity.ProductDetailActivity"
+            android:label="Product Detail">
+        </activity>
+        <activity android:name=".activity.ProductListActivity"
+            android:label="Product List">
+        </activity>
+        <activity android:name=".activity.SubCategoryActivity"
+            android:label="SubCategory">
+        </activity>
+        <activity android:name=".activity.LandingPageActivity"
+            android:label="Dashboard">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
     </application>
 
