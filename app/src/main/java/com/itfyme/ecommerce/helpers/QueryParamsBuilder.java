@@ -39,9 +39,13 @@ public class QueryParamsBuilder {
     }
 
     public static String getQueryParameters(String url,  HashMap<String, String> map) {
-        String query = urlEncodeUTF8(map);
-        String str = url + "?" + query;
-        return str;
+        if(map.size()>0){
+            String query = urlEncodeUTF8(map);
+            String str = url + "?" + query;
+            return str;
+        }else {
+            return url;
+        }
     }
 
 }
