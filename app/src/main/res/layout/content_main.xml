@@ -3,18 +3,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="horizontal"
+
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/app_bar_main">
 
-<!--    <fragment-->
-<!--        android:id="@+id/nav_host_fragment_content_main"-->
-<!--        android:name="androidx.navigation.fragment.NavHostFragment"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        app:defaultNavHost="true"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:navGraph="@navigation/mobile_navigation" />-->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        tools:ignore="MissingConstraints">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/CatBanner"
+        android:layout_marginTop="51dp"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/g"/>
+    <TextView
+        android:textAlignment="center"
+        android:textSize="25dp"
+
+        android:textColor="#000000"
+        android:id="@+id/txtCategory"
+        android:layout_below="@+id/CatBanner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Category"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@id/txtCategory"
+        android:id="@+id/CategoryList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:overScrollMode="never" >
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+</RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
