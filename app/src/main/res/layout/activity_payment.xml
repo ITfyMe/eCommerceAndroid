@@ -1,9 +1,244 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.PaymentActivity">
+    android:layout_height="wrap_content"
+    android:background="#F5F5F5">
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/tool_bar_sub"/>
+    <RelativeLayout
+        android:id="@+id/r"
+        android:layout_below="@id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:textAlignment="center"
+            android:text="User Details"
+            android:layout_marginBottom="20dp"
+            android:id="@+id/lbl"/>
+        <TextView
+            android:layout_below="@id/lbl"
+            android:layout_marginLeft="10dp"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="customerName"/>
+        <TextView
+            android:layout_below="@id/lbl"
+            android:id="@+id/cusID"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="customerName"/>
+        <!--    email-->
+        <TextView
+            android:layout_below="@id/cusID"
+            android:id="@+id/Email"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:text="email"/>
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_below="@id/cusID"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="email"/>
+
+        <!--    phone-->
+
+        <TextView
+            android:layout_below="@id/Email"
+            android:id="@+id/phone"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="phone"/>
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_below="@id/Email"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="phone"/>
+        <!--    add1-->
+        <TextView
+            android:layout_below="@id/phone"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/addr1"
+            android:text="customerAddressId"/>
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_below="@id/phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="addr1"/>
+        <!--    add2-->
+        <TextView
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"
+            android:layout_below="@id/addr1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/add2"
+            android:textAlignment="viewEnd"
+            android:text="Addr"/>
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_below="@id/addr1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Addr"/>
+        <!--    add3-->
+        <TextView
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"
+            android:layout_below="@id/add2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/addr3"
+            android:text="addr3"/>
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_below="@id/add2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="addr3"/>
+        <!--    city-->
+        <TextView
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"
+            android:layout_below="@id/addr3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/city"
+            android:text="city"/>
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_below="@id/addr3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="city"/>
+        <!--    state-->
+        <TextView
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"
+            android:layout_below="@id/city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/state"
+            android:text="state"/>
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_below="@id/city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="state"/>
+        <!--    pincode-->
+        <TextView
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"
+            android:layout_below="@id/state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pincode"
+            android:text="pincode"/>
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_below="@id/state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="pincode"/>
+
+        <RadioGroup
+            android:id="@+id/group"
+            android:layout_marginTop="250dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:id="@+id/cod"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/pincode"
+                android:layout_marginTop="53dp"
+                android:text="Cash On Delivery"
+                android:textSize="20dp" />
+
+            <RadioButton
+                android:id="@+id/Debit"
+                android:layout_marginLeft="10dp"
+                android:textSize="20dp"
+                android:layout_below="@+id/cod"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DebitCard"/>
+            <RadioButton
+                android:layout_marginLeft="10dp"
+                android:id="@+id/credit"
+                android:textSize="20dp"
+                android:layout_below="@+id/Debit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Credit"/>
+        </RadioGroup>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_below="@+id/group"
+                android:layout_marginBottom="20dp"
+                >
+                <RelativeLayout
+                    android:id="@+id/T"
+                    android:layout_below="@id/group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginTop="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="TotalCost"
+            android:textSize="20dp"
+            android:id="@+id/txtTlt"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textSize="15dp"
+            android:text="1500"
+            android:layout_marginLeft="20dp"
+            android:layout_below="@id/txtTlt"
+            android:id="@+id/totalCost"/>
+
+        <Button
+            android:layout_below="@id/totalCost"
+            android:text="Place Order"
+            android:layout_marginTop="45dp"
+            android:id="@+id/btncontinue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+</RelativeLayout>

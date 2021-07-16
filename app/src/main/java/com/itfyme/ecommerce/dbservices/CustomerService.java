@@ -7,20 +7,24 @@ import com.itfyme.ecommerce.network.VolleyNetworkManager;
 
 import java.util.HashMap;
 
-public class MyCartService {
+public class CustomerService {
     Context mContext;
-    private String getListByPageURL ="MyCart/get-list-object-page";
-    private String getListURL       ="cart/get-object";
-    private String getURL           ="cart/get-object";
 
-    private String updateURL        ="cart/update-item";
+    private String getListByPageURL ="MyCart/get-list-object-page";
+    private String getListURL       ="/customer_address/get-customer-adderss-by-id";
+    private String getURL           ="cart/get-object";
+    //    private String addURL     ="MyCart/add";
+    private String updateURL        ="MyCart/update";
     private String deleteURL        ="cart/delete-item";
 
 
-    public MyCartService(Context context) {
+    public CustomerService(Context context) {
         mContext = context;
 
     }
+
+
+
     public void getCartList(HashMap<String, String> params, ResponseHandler responseHandler) {
         new VolleyNetworkManager(mContext).getRequest(getListURL, params, new ResponseHandler() {
             @Override
@@ -100,7 +104,6 @@ public class MyCartService {
 
 
     }
-
 
 
 }

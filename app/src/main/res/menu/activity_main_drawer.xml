@@ -13,6 +13,23 @@
             android:id="@+id/nav_order"
             android:icon="@drawable/ic_baseline_shopping_bag_24"
             android:title="@string/menu_order" />
+<!--        <item />-->
+<!--        <item />-->
+<!--        <item />-->
+<!--        <item />-->
+<!--        <item />-->
+<!--        <item />-->
+<!--        <item />-->
+<!--        <item />-->
+<!--        <item />-->
+
+
+<!--        <item-->
+<!--            android:id="@+id/Login"-->
+<!--            android:icon="@drawable/mail"-->
+<!--            android:title="Logout" />-->
+
 
     </group>
+
 </menu>

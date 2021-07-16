@@ -8,7 +8,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
 public class AppController extends Application {
-
+    public static int count=0;
     private RequestQueue mRequestQueue;
 
     private static AppController mInstance;

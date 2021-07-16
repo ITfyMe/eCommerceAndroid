@@ -1,6 +1,8 @@
 package com.itfyme.ecommerce.activity;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -9,6 +11,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
+import com.google.android.material.navigation.NavigationView;
 import com.itfyme.ecommerce.R;
 import com.itfyme.ecommerce.dbservices.SubCategoryService;
 import com.itfyme.ecommerce.helpers.LayoutUtility;
@@ -32,12 +37,18 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+/*
+        Shows sub category list in a grid format
+        Shows Navigation
+        Facilitates search , cart
+        Gets the data from LandingPage through Intent
+        Data is a JSON object containing Category Object along with its Sub Categories
+ */
 
-public class SubCategoryActivity extends BaseActivity  {
+public class SubCategoryActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener{
     JSONArray subCategoryArr;
     RecyclerView recyclerView;
-
-
+    ImageView search,cart;
     SubCategoryActivity.SubCategoryAdapter subCategoryAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceSubCategory) {
@@ -47,36 +58,59 @@ public class SubCategoryActivity extends BaseActivity  {
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_keyboard_backspace_24);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-
+            toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+            ActionBar actionBar;
+            actionBar = getSupportActionBar();
+            ColorDrawable colorDrawable
+                    = new ColorDrawable(Color.parseColor("#000000"));
+            // Set BackgroundDrawable
+            actionBar.setBackgroundDrawable(colorDrawable);
             recyclerView=findViewById(R.id.subcategorylist);
-
-            if(getIntent().hasExtra("response_object")){
-                String info = getIntent().getStringExtra("response_object");
+            if(getIntent().hasExtra("categoryObject")){
+                String info = getIntent().getStringExtra("categoryObject");
                 JSONObject dataObj= new JSONObject(info);
                 //converting arr into json array
                 subCategoryArr =  dataObj.optJSONArray("SubCategories");
             }
-
-//            initDataSet();
             initGridView();
             showListView();
-            //getMenuList();
-        }catch (Exception e ){
+        } catch (Exception e ) {
             e.printStackTrace();
         }
     }
-    //SubCategories
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.menu_search) {
+            Intent intent =new Intent(SubCategoryActivity.this,SearchActivity.class);
+            startActivity(intent);
+            return true;
+        }else if (id == R.id.menu_count) {
+            Intent intent =new Intent(SubCategoryActivity.this,MyCartActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        return true;
+    }
+    @Override
     public boolean onSupportNavigateUp() {
+
         onBackPressed();
         return true;
     }
-
-
-//refresh page
 
     private void showListView() {
         try {
@@ -88,23 +122,16 @@ public class SubCategoryActivity extends BaseActivity  {
         }
     }
 
-    // initializing data set
-//    private void initDataSet() {
-//        subCategoryArr = new JSONArray();
-//
-//    }
     private void initGridView() {
         try {
             subCategoryAdapter = new SubCategoryAdapter(subCategoryArr);
             recyclerView.setHasFixedSize(true);
-            GridLayoutManager maneger=new GridLayoutManager(this,3);
-            recyclerView.setLayoutManager(maneger);
+            GridLayoutManager manager=new GridLayoutManager(this,2);
+            recyclerView.setLayoutManager(manager);
             recyclerView.setAdapter(subCategoryAdapter);
         }catch (Exception e){
             e.printStackTrace();
         }
-
-
     }
     // adapter class
     private class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.ViewHolder> {
@@ -121,10 +148,8 @@ public class SubCategoryActivity extends BaseActivity  {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
             View listItem = layoutInflater.inflate(R.layout.template_sub_category, parent, false);
             SubCategoryActivity.SubCategoryAdapter.ViewHolder
-
                     viewHolder = new ViewHolder(listItem);
             return viewHolder;
-
         }
         @Override
         public void onBindViewHolder(SubCategoryActivity.SubCategoryAdapter.ViewHolder holder, int position) {
@@ -133,19 +158,17 @@ public class SubCategoryActivity extends BaseActivity  {
                 JSONObject obj = dataSource.optJSONObject(position);
                 String name=obj.optString("Name");
                 holder.txtName.setText(name);
-                String imgimage=obj.optString("ImageURL");
-                LayoutUtility.setImageByUrl(SubCategoryActivity.this,holder.imgImage,imgimage);
+                String imgimage = obj.optString("ImageURL");
+                LayoutUtility.setImageByUrl(SubCategoryActivity.this, holder.imgImage, imgimage);
                 holder.linearLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(getApplicationContext(),ProductListActivity.class);
-                        intent.putExtra("response_object" ,obj.toString());
+                        intent.putExtra("subCategoryObj" ,obj.toString());
                         Log.d("",obj.toString());
                         startActivity(intent);
                     }
                 });
-//
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -154,7 +177,6 @@ public class SubCategoryActivity extends BaseActivity  {
         public int getItemCount() {
 
             return dataSource.length();
-
         }
         private class ViewHolder extends RecyclerView.ViewHolder {
             public TextView txtName;
@@ -163,16 +185,9 @@ public class SubCategoryActivity extends BaseActivity  {
             public ViewHolder(View itemView) {
                 super(itemView);
                 this.txtName = (TextView) itemView.findViewById(R.id.txtSubCategoryName);
-                this.imgImage = (ImageView) itemView.findViewById(R.id.imgSubCategoryimage);
+                this.imgImage = (ImageView) itemView.findViewById(R.id.imgSubCategoryImage);
                 linearLayout  = (LinearLayout) itemView.findViewById(R.id.subcategorylayout);
-
             }
         }
     }
-
-
-
-
-
-
 }

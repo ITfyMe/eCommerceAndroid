@@ -7,23 +7,20 @@ import com.itfyme.ecommerce.network.VolleyNetworkManager;
 
 import java.util.HashMap;
 
-
-public class SubCategoryService {
+public class SearchService {
     Context mContext;
-    private String getListByPageURL ="subcategory/get-list-object-page";
-    private String getListURL       ="subcategory/get-list";
-    private String getURL           ="subcategory/get";
-    private String addURL           ="subcategory/add";
-    private String updateURL        ="subcategory/update";
-    private String deleteURL        ="subcategory/delete";
-    private String getMenuList      ="menu/get-menu";
-
-    public SubCategoryService(Context context) {
+    private String getListByPageURL ="search/get-list-object-page";
+    private String getListURL       ="product/product-by-search";
+    private String getURL           ="search/get";
+    private String addURL           ="search/add";
+    private String updateURL        ="search/update";
+    private String deleteURL        ="search/delete";
+    public SearchService(Context context) {
         mContext = context;
 
     }
 
-    public void getSubCategoryByPage(HashMap<String, String> params, ResponseHandler responseHandler) {
+    public void getSearchListByPage(HashMap<String, String> params, ResponseHandler responseHandler) {
         new VolleyNetworkManager(mContext).getRequest(getListByPageURL, params, new ResponseHandler() {
             @Override
             public void onSuccess(Object data) {
@@ -48,8 +45,8 @@ public class SubCategoryService {
 
 
     }
-    public void customer(HashMap<String, String> params, ResponseHandler responseHandler) {
-        new VolleyNetworkManager(mContext).getRequest(getMenuList, params, new ResponseHandler() {
+    public void getSearchList(HashMap<String, String> params, ResponseHandler responseHandler) {
+        new VolleyNetworkManager(mContext).getRequest(getListURL, params, new ResponseHandler() {
             @Override
             public void onSuccess(Object data) {
                 try {
@@ -74,8 +71,7 @@ public class SubCategoryService {
 
     }
 
-
-    public void getSubCategory(HashMap<String, String> params, ResponseHandler responseHandler) {
+    public void getSearch(HashMap<String, String> params, ResponseHandler responseHandler) {
         new VolleyNetworkManager(mContext).getRequest(getURL, params, new ResponseHandler() {
             @Override
             public void onSuccess(Object data) {
@@ -100,7 +96,7 @@ public class SubCategoryService {
 
 
     }
-    public void addSubCategory(HashMap<String, String> params, ResponseHandler responseHandler) {
+    public void addSearch(HashMap<String, String> params, ResponseHandler responseHandler) {
         new VolleyNetworkManager(mContext).postRequest(addURL, params, new ResponseHandler() {
             @Override
             public void onSuccess(Object data) {
@@ -125,7 +121,7 @@ public class SubCategoryService {
 
 
     }
-    public void updateSubCategory(HashMap<String, String> params, ResponseHandler responseHandler) {
+    public void updateSearch(HashMap<String, String> params, ResponseHandler responseHandler) {
         new VolleyNetworkManager(mContext).postRequest(updateURL, params, new ResponseHandler() {
             @Override
             public void onSuccess(Object data) {
@@ -150,9 +146,9 @@ public class SubCategoryService {
 
 
     }
-    public void deleteSubCategory(String id, ResponseHandler responseHandler) {
+    public void deleteSearch(String id, ResponseHandler responseHandler) {
         HashMap<String, String> params=new HashMap<>();
-        params.put("SubCategoryid",id);
+        params.put("searchid",id);
         new VolleyNetworkManager(mContext).postRequest(deleteURL, params, new ResponseHandler() {
             @Override
             public void onSuccess(Object data) {
