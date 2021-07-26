@@ -130,7 +130,7 @@ public class PaymentActivity extends BaseActivity {
         onBackPressed();
         return true;
     }
-    private void getCartList(){
+    public void getCartList(){
         try {
             HashMap<String, String> mapList = new HashMap<>();
             if (this.userObj != null) {

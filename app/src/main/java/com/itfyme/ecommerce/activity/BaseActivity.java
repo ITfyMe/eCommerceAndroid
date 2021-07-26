@@ -10,15 +10,18 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.itfyme.ecommerce.R;
 import com.itfyme.ecommerce.controller.AppController;
 import com.itfyme.ecommerce.dbservices.LoginService;
+import com.itfyme.ecommerce.dbservices.MyCartService;
 import com.itfyme.ecommerce.helpers.LayoutUtility;
 import com.itfyme.ecommerce.helpers.Utility;
 import com.itfyme.ecommerce.interfaces.ResponseHandler;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -31,11 +34,14 @@ import java.util.HashMap;
  */
 public class BaseActivity extends AppCompatActivity {
     String mActivityName="";
+
+    public static int count=0;
     static JSONObject userObj  = null ; // used across the application
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
+
             mActivityName = this.getLocalClassName();
             AppController.getInstance().setActivityTag(mActivityName);
         } catch (Exception e) {
@@ -67,6 +73,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
+
     @Override
     public void onBackPressed() {
         try {
@@ -137,6 +144,49 @@ public class BaseActivity extends AppCompatActivity {
                 public void onNoData(Object data) {
                 }
             });
+        }
+    }
+
+    public void setCartArr(JSONArray arr){
+        storeInSharedPreference("cart", arr.toString());
+    }
+
+    public void setCount(TextView cartCount) {
+        cartCount.setText(getCartCount());
+    }
+
+    public String getCartCount() {
+        String cart = getFromSharedPreference("cart");
+        try {
+            JSONArray arr = new JSONArray(cart) ;
+            count = arr.length();
+            Log.d("Cart Length", Integer.toString(count));
+            return Integer.toString(count) ;
+
+        } catch (Exception e) {
+            Log.d("Exception",e.toString());
+        }
+        return "0";
+    }
+
+    public void addCart(JSONObject item){
+        String cart = getFromSharedPreference("cart");
+        try {
+            JSONArray arr = new JSONArray(cart) ;
+            arr.put(item);
+            storeInSharedPreference("cart", arr.toString());
+        } catch (Exception e) {
+            Log.d("Exception",e.toString());
+        }
+    }
+    public void cartDelete(int i) {
+        String cart = getFromSharedPreference("cart");
+        try {
+            JSONArray arr = new JSONArray(cart) ;
+            arr.remove(i);
+            storeInSharedPreference("cart", arr.toString());
+        } catch (Exception e) {
+            Log.d("Exception",e.toString());
         }
     }
 }

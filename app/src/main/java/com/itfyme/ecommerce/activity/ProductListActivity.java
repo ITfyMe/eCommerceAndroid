@@ -27,9 +27,12 @@ import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 import com.itfyme.ecommerce.R;
+import com.itfyme.ecommerce.controller.AppController;
+import com.itfyme.ecommerce.dbservices.MyCartService;
 import com.itfyme.ecommerce.dbservices.ProductListService;
 import com.itfyme.ecommerce.helpers.LayoutUtility;
 import com.itfyme.ecommerce.helpers.NetworkUtility;
+import com.itfyme.ecommerce.helpers.Utility;
 import com.itfyme.ecommerce.interfaces.ResponseHandler;
 
 import org.json.JSONArray;
@@ -38,7 +41,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 
-public class ProductListActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class ProductListActivity extends BaseActivity {
     RecyclerView recyclerView;
     TextView textView;
     JSONArray productArr;
@@ -48,6 +51,7 @@ public class ProductListActivity extends BaseActivity implements NavigationView.
     private TextView txtTotalRec;
     ProductAdapter productAdapter;
     String subCategoryId;
+    TextView numCount;
     @Override
     protected void onCreate(Bundle savedInstanceProduct) {
         try {
@@ -70,19 +74,11 @@ public class ProductListActivity extends BaseActivity implements NavigationView.
             // Set BackgroundDrawable
             actionBar.setBackgroundDrawable(colorDrawable);
 
-            if(getIntent().hasExtra("subCategoryObj")){
-               String str = getIntent().getStringExtra("subCategoryObj");
-                JSONObject dataObj= new JSONObject(str);
-                subCategoryId=dataObj.optString("SubCategoryID");
-            }
-
-            initDataSet();
-            initListView();
-            getProductList();
             cartLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent =new Intent(ProductListActivity.this,MyCartActivity.class);
+
                     startActivity(intent);
                 }
             });
@@ -93,40 +89,23 @@ public class ProductListActivity extends BaseActivity implements NavigationView.
                     startActivity(intent);
                 }
             });
+            if(getIntent().hasExtra("subCategoryObj")){
+               String str = getIntent().getStringExtra("subCategoryObj");
+                JSONObject dataObj= new JSONObject(str);
+                subCategoryId=dataObj.optString("SubCategoryID");
+            }
+
+//            numCount=findViewById(R.id.count);
+            initDataSet();
+            initListView();
+            getProductList();
+            numCount=findViewById(R.id.count);
+            setCount(numCount);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar, menu);
-        return true;
-    }
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-//        if (id == R.id.menu_search) {
-//            Intent intent =new Intent(ProductListActivity.this,SearchActivity.class);
-//            startActivity(intent);
-//            return true;
-//        }
-//        else if (id == R.id.menu_cart) {
-//            Intent intent =new Intent(ProductListActivity.this,MyCartActivity.class);
-//            startActivity(intent);
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        return true;
-    }
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
     private void showListView() {
         try {
             productAdapter.setData(productArr);
@@ -135,7 +114,11 @@ public class ProductListActivity extends BaseActivity implements NavigationView.
             e.printStackTrace();
         }
     }
-
+    @Override
+    public void onResume(){
+        super.onResume();
+        numCount.setText(getCartCount());
+    }
     private void getProductList() {
         HashMap<String, String> params = new HashMap<>();
         params.put("sub_cat_id", String.valueOf(subCategoryId));
@@ -198,6 +181,44 @@ public class ProductListActivity extends BaseActivity implements NavigationView.
             e.printStackTrace();
         }
     }
+
+//    public void getCartList() {
+//        try {
+//            HashMap<String, String> mapList = new HashMap<>();
+//            if (this.userObj != null) {
+//                // you have user information already available
+//                mapList.put("customerid",this.userObj.optString("CustomerID"));
+//                mapList.put("sessionid",getFromSharedPreference(Utility.sessionKey));
+//            } else {
+//                mapList.put("customerid","-1");
+//                mapList.put("sessionid",getFromSharedPreference(Utility.sessionKey));
+//            }
+//            new MyCartService(this).getCartList(mapList, new ResponseHandler() {
+//                @Override
+//                public void onSuccess(Object data) {
+//                    try {
+//                        myCartArr=new JSONArray();
+//                        JSONObject obj = new JSONObject(data.toString());
+//                        myCartArr = obj.optJSONArray("items");
+//                        count = myCartArr.length();
+//                        numCount.setText(String.valueOf(count));
+//                    }catch(Exception e){
+//                        e.printStackTrace();
+//                    }
+//                }
+//                @Override
+//                public void onFail(Object data) {
+//                    Log.d("", "");
+//                }
+//                @Override
+//                public void onNoData(Object data) {
+//                    Log.d("", "");
+//                }
+//            });
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     //getting result back after add and refreshing the list
     @Override

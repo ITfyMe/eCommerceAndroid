@@ -45,10 +45,13 @@ import java.util.HashMap;
         Data is a JSON object containing Category Object along with its Sub Categories
  */
 
-public class SubCategoryActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class SubCategoryActivity extends BaseActivity {
     JSONArray subCategoryArr;
     RecyclerView recyclerView;
     ImageView search,cart;
+    TextView numCount;
+
+    RelativeLayout cartLayout,searchLayout;
     SubCategoryActivity.SubCategoryAdapter subCategoryAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceSubCategory) {
@@ -56,10 +59,12 @@ public class SubCategoryActivity extends BaseActivity implements NavigationView.
             super.onCreate(savedInstanceSubCategory);
             setContentView(R.layout.activity_sub_category);
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            cartLayout=toolbar.findViewById(R.id.cartLayout);
+            searchLayout=toolbar.findViewById(R.id.searchLayout);
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_keyboard_backspace_24);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_keyboard_backspace_24);
             toolbar.setTitleTextColor(getResources().getColor(R.color.white));
             ActionBar actionBar;
             actionBar = getSupportActionBar();
@@ -67,6 +72,24 @@ public class SubCategoryActivity extends BaseActivity implements NavigationView.
                     = new ColorDrawable(Color.parseColor("#000000"));
             // Set BackgroundDrawable
             actionBar.setBackgroundDrawable(colorDrawable);
+
+            numCount=findViewById(R.id.count);
+            setCount(numCount);
+            cartLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent =new Intent(SubCategoryActivity.this,MyCartActivity.class);
+
+                    startActivity(intent);
+                }
+            });
+            searchLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent =new Intent(SubCategoryActivity.this,SearchActivity.class);
+                    startActivity(intent);
+                }
+            });
             recyclerView=findViewById(R.id.subcategorylist);
             if(getIntent().hasExtra("categoryObject")){
                 String info = getIntent().getStringExtra("categoryObject");
@@ -80,38 +103,16 @@ public class SubCategoryActivity extends BaseActivity implements NavigationView.
             e.printStackTrace();
         }
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar, menu);
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.menu_search) {
-            Intent intent =new Intent(SubCategoryActivity.this,SearchActivity.class);
-            startActivity(intent);
-            return true;
-        }else if (id == R.id.menu_count) {
-            Intent intent =new Intent(SubCategoryActivity.this,MyCartActivity.class);
-            startActivity(intent);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        return true;
-    }
     @Override
     public boolean onSupportNavigateUp() {
-
         onBackPressed();
         return true;
     }
-
+    @Override
+    public void onResume(){
+        super.onResume();
+        numCount.setText(getCartCount());
+    }
     private void showListView() {
         try {
             subCategoryAdapter.setData(subCategoryArr);

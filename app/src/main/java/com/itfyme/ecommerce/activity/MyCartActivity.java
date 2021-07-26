@@ -53,16 +53,16 @@ import java.util.HashMap;
  */
 public class MyCartActivity extends BaseActivity {
     JSONArray mycartArr;
-    TextView  txtPrice, txtTotal;
-    String count;
+    TextView  textPrice, textTotal;
     ImageView delete;
     Spinner spinner;
     double tot;
-    Button btncontinue;
+    Button buttonContinue;
     RecyclerView recyclerView;
     MyCartAdapter myCartAdapter;
-    RelativeLayout re;
-    TextView cartEmpty,clickHere;
+    RelativeLayout relative;
+    LinearLayout cartEmptyLayout;
+    TextView cartEmpty,clickHere,continueShop;
     ArrayList<Integer> qtyList = new ArrayList<>();
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,18 +76,22 @@ public class MyCartActivity extends BaseActivity {
             toolbar.setTitleTextColor(getResources().getColor(R.color.white));
             ActionBar actionBar;
             actionBar = getSupportActionBar();
-            ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#000000"));
+            ColorDrawable colorDrawable
+                    = new ColorDrawable(Color.parseColor("#000000"));
             // Set BackgroundDrawable
             actionBar.setBackgroundDrawable(colorDrawable);
+
             toolbar.setNavigationOnClickListener(view -> onBackPressed());
-            txtPrice = findViewById(R.id.txtPrice);
+            textPrice = findViewById(R.id.txtPrice);
             recyclerView = findViewById(R.id.cartList);
-            txtTotal = findViewById(R.id.txtTotal);
+            cartEmptyLayout = findViewById(R.id.cartEmpty);
+            textTotal = findViewById(R.id.txtTotal);
             delete = findViewById(R.id.delete);
-            btncontinue = findViewById(R.id.btncontinue);
-            re=findViewById(R.id.re);
+            buttonContinue = findViewById(R.id.btncontinue);
+            relative=findViewById(R.id.re);
             cartEmpty=findViewById(R.id.txtCartEmpty);
             clickHere=findViewById(R.id.txtClickHere);
+            continueShop=findViewById(R.id.txtContine);
             clickHere.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -95,8 +99,7 @@ public class MyCartActivity extends BaseActivity {
                     startActivity(intent);
                 }
             });
-
-            btncontinue.setOnClickListener(new View.OnClickListener() {
+            buttonContinue.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // check in shared preference if user is logged in or sessionid only
@@ -133,15 +136,7 @@ public class MyCartActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.menu_search) {
-            Intent intent =new Intent(MyCartActivity.this,SearchActivity.class);
-            startActivity(intent);
-            return true;
-        }else if (id == R.id.menu_count) {
-            Intent intent =new Intent(MyCartActivity.this,MyCartActivity.class);
-            startActivity(intent);
-            return true;
-        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -175,10 +170,8 @@ public class MyCartActivity extends BaseActivity {
             JSONObject obj = mycartArr.optJSONObject(i) ;
             total_sum+= obj.optInt("qty") * obj.optDouble("price");
         }
-
         Log.d("total" , Double.toString(total_sum));
-
-        txtTotal.setText(total_sum + "");
+        textTotal.setText(total_sum + "");
         tot=total_sum;
     }
 
@@ -193,7 +186,7 @@ public class MyCartActivity extends BaseActivity {
         recyclerView.setAdapter(myCartAdapter);
     }
 
-    private void getCartList() {
+    public void getCartList() {
         try {
             HashMap<String, String> mapList = new HashMap<>();
             if (this.userObj != null) {
@@ -209,18 +202,18 @@ public class MyCartActivity extends BaseActivity {
                 public void onSuccess(Object data) {
                     try {
                         JSONObject obj = new JSONObject(data.toString());
-                        mycartArr = obj.getJSONArray("items");
-//                        count= String.valueOf(mycartArr.length());
-////                        categoryAdapter.notifyDataSetChanged();
-//                        SharedPreferences sh = getSharedPreferences("CartCount", MODE_PRIVATE);
-//                            SharedPreferences.Editor ed = sh.edit();
-//                            ed.putString("count", count);
-//                            ed.apply();
-//                        storeInSharedPreference("count",count);
-                        showListView();
-                        showTotal();
-                        cartEmpty.setVisibility(View.GONE);
-                        clickHere.setVisibility(View.GONE);
+                        mycartArr = obj.optJSONArray("items");
+                        if(mycartArr==null||mycartArr.length()==0){
+                            relative.setVisibility(View.INVISIBLE);
+                            recyclerView.setVisibility(View.GONE);
+                            cartEmptyLayout.setVisibility(View.VISIBLE);
+                        }else{
+                            relative.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.VISIBLE);
+                            cartEmptyLayout.setVisibility(View.GONE);
+                            showListView();
+                            showTotal();
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -231,14 +224,24 @@ public class MyCartActivity extends BaseActivity {
                 }
                 @Override
                 public void onNoData(Object data) {
-                    recyclerView.setVisibility(View.GONE);
-                    re.setVisibility(View.GONE);
+                    try {
+                        relative.setVisibility(View.INVISIBLE);
+                        recyclerView.setVisibility(View.GONE);
+                        cartEmptyLayout.setVisibility(View.VISIBLE);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
+
+
         }
     }
+
+
     private void updateCart(JSONObject item) {
         try {
             HashMap<String, String> params = new HashMap<>();
@@ -250,8 +253,10 @@ public class MyCartActivity extends BaseActivity {
             new MyCartService(this).updateCart(params, new ResponseHandler() {
                 @Override
                 public void onSuccess(Object data) {
+
                     Toast.makeText(MyCartActivity.this, "Cart Update successfully", Toast.LENGTH_LONG).show();
                     Log.d("cart",data.toString());
+
                 }
                 @Override
                 public void onFail(Object data) {
@@ -267,11 +272,13 @@ public class MyCartActivity extends BaseActivity {
 
         } catch (Exception e) {
             e.printStackTrace();
+
         }
     }
 
     private class MyCartAdapter extends RecyclerView.Adapter<MyCartAdapter.ViewHolder> {
         private JSONArray dataSource;
+
         public MyCartAdapter(JSONArray listdata) {
             this.dataSource = listdata;
         }
@@ -284,6 +291,7 @@ public class MyCartActivity extends BaseActivity {
             View listItem = layoutInflater.inflate(R.layout.template_my_cart, parent, false);
             MyCartActivity.MyCartAdapter.ViewHolder viewHolder = new ViewHolder(listItem);
             return viewHolder;
+
         }
         @Override
         public void onBindViewHolder(MyCartActivity.MyCartAdapter.ViewHolder holder, int position) {

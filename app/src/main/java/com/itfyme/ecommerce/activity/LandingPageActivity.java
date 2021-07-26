@@ -1,12 +1,10 @@
 package com.itfyme.ecommerce.activity;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.google.android.material.navigation.NavigationView;
 import com.itfyme.ecommerce.R;
 import com.itfyme.ecommerce.controller.AppController;
@@ -30,8 +27,6 @@ import com.itfyme.ecommerce.interfaces.ResponseHandler;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /*
@@ -48,9 +43,7 @@ public class LandingPageActivity extends BaseActivity implements NavigationView.
         RelativeLayout cartLayout,searchLayout;
         LandingPageActivity.CategoryAdapter categoryAdapter;
         TextView deviceText,numCount;
-        JSONArray mycartArr;
-        String count;
-        ArrayList<Integer> qtyList = new ArrayList<>();
+        JSONArray myCartArr;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -63,52 +56,94 @@ public class LandingPageActivity extends BaseActivity implements NavigationView.
                         searchLayout=toolbar.findViewById(R.id.searchLayout);
                         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                         getSupportActionBar().setDisplayShowHomeEnabled(false);
-                        deviceText=findViewById(R.id.deviceId);
-                        numCount=findViewById(R.id.count);
-                        //image slider
                         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-                        // check if returning or new user
-                        if (getFromSharedPreference(Utility.sessionKey).equals("")) {
-                                storeInSharedPreference(Utility.sessionKey, getDeviceID()); // new user
-                                Log.d("user", "new user") ;
-                        } else {
-                                this.doAutoLogin(); //this is base class
-                                Log.d("user", "returning user") ;
-                                Log.d("user", getFromSharedPreference(Utility.userkey)) ;
-                        }
-
                         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
                         drawer.addDrawerListener(toggle);
                         toggle.syncState();
                         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
                         navigationView.setNavigationItemSelectedListener(this);
+                        cartLayout.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                        Intent intent =new Intent(LandingPageActivity.this,MyCartActivity.class);
+
+                                        startActivity(intent);
+                                }
+                        });
+                        searchLayout.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                        Intent intent =new Intent(LandingPageActivity.this,SearchActivity.class);
+                                        startActivity(intent);
+                                }
+                        });
+                        deviceText=findViewById(R.id.deviceId);
+                        numCount=findViewById(R.id.count);
+                        //image slider
+
+                        // check if returning or new user
+                        if (getFromSharedPreference(Utility.sessionKey).equals("")) {
+                                storeInSharedPreference(Utility.sessionKey, getDeviceID()); // new user
+                                Log.d("user", "new user") ;
+                        } else {
+                                this.doAutoLogin(); //this is base class
+
+                                Log.d("user", "returning user") ;
+                                Log.d("user", getFromSharedPreference(Utility.userkey)) ;
+                        }
+
                         recyclerView=findViewById(R.id.CategoryList);
                         initDataSet();
                         initGridView();
                         getMenuList();
                         getCartList();
-                        cartLayout.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent =new Intent(LandingPageActivity.this,MyCartActivity.class);
 
-                                 startActivity(intent);
-                            }
-                        });
-                        searchLayout.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent =new Intent(LandingPageActivity.this,SearchActivity.class);
-                        startActivity(intent);
-                            }
-                        });
                 }catch (Exception e ){
                         e.printStackTrace();
                 }
 //            SharedPreferences sharedPreferences = getSharedPreferences("CartCount", MODE_PRIVATE);
 //            String count  = sharedPreferences.getString("count","");
 //            numCount.setText(count);
+        }
+        public void getCartList() {
+                try {
+                        HashMap<String, String> mapList = new HashMap<>();
+                        if (this.userObj != null) {
+                                // you have user information already available
+                                mapList.put("customerid",this.userObj.optString("CustomerID"));
+                                mapList.put("sessionid",getFromSharedPreference(Utility.sessionKey));
+                        } else {
+                                mapList.put("customerid","-1");
+                                mapList.put("sessionid",getFromSharedPreference(Utility.sessionKey));
+                        }
+                        new MyCartService(this).getCartList(mapList, new ResponseHandler() {
+                                @Override
+                                public void onSuccess(Object data) {
+                                        try {
+                                                myCartArr=new JSONArray();
+                                                JSONObject obj = new JSONObject(data.toString());
+                                                myCartArr = obj.optJSONArray("items");
+                                                setCartArr(myCartArr);
+                                                numCount.setText(getCartCount());
+                                                Log.d("cart", myCartArr.toString());
+//                        numCount.setText(String.valueOf(count));
+                                        }catch(Exception e){
+                                                e.printStackTrace();
+                                        }
+                                }
+                                @Override
+                                public void onFail(Object data) {
+                                        Log.d("", "");
+                                }
+                                @Override
+                                public void onNoData(Object data) {
+                                        Log.d("", "");
+                                }
+                        });
+                } catch (Exception e) {
+                        e.printStackTrace();
+                }
         }
 
         @Override
@@ -120,33 +155,7 @@ public class LandingPageActivity extends BaseActivity implements NavigationView.
                         super.onBackPressed();
                 }
         }
-//        @Override
-//        public boolean onCreateOptionsMenu(Menu menu) {
-//                super.onCreateOptionsMenu(menu);
-//                // Inflate the menu; this adds items to the action bar if it is present.
-//                getMenuInflater().inflate(R.menu.toolbar, menu);
-//                return true;
-//        }
-//
-//        @Override
-//        public boolean onOptionsItemSelected(MenuItem item) {
-//                // Handle action bar item clicks here. The action bar will
-//                // automatically handle clicks on the Home/Up button, so long
-//                // as you specify a parent activity in AndroidManifest.xml.
-//            switch (item.getItemId()){
-//                case R.id.menu_search:
-//                    Intent intent =new Intent(LandingPageActivity.this,SearchActivity.class);
-//                    startActivity(intent);
-//                    return true;
-//                case R.id.menu_count:
-//                    Intent intent1 =new Intent(LandingPageActivity.this,MyCartActivity.class);
-//                    startActivity(intent1);
-//                    return true;
-//            }
-//                //noinspection SimplifiableIfStatement
-//
-//                return super.onOptionsItemSelected(item);
-//        }
+
         @SuppressWarnings("StatementWithEmptyBody")
         @Override
         public boolean onNavigationItemSelected(MenuItem item) {
@@ -212,45 +221,13 @@ public class LandingPageActivity extends BaseActivity implements NavigationView.
                 }
         }
 
-        private void getCartList() {
-                try {
-                        HashMap<String, String> mapList = new HashMap<>();
-                        if (this.userObj != null) {
-                                // you have user information already available
-                                mapList.put("customerid",this.userObj.optString("CustomerID"));
-                                mapList.put("sessionid",getFromSharedPreference(Utility.sessionKey));
-                        } else {
-                                mapList.put("customerid","-1");
-                                mapList.put("sessionid",getFromSharedPreference(Utility.sessionKey));
-                        }
-                        new MyCartService(this).getCartList(mapList, new ResponseHandler() {
-                                @Override
-                                public void onSuccess(Object data) {
-                                        try {
-                                                mycartArr=new JSONArray();
-                                                JSONObject obj = new JSONObject(data.toString());
-                                                mycartArr = obj.optJSONArray("items");
-                                                AppController.count = mycartArr.length();
-                                                numCount.setText(String.valueOf(AppController.count));
-                                        }catch(Exception e){
-                                                e.printStackTrace();
-                                        }
-                                }
-                                @Override
-                                public void onFail(Object data) {
-                                        Log.d("", "");
-                                }
-                                @Override
-                                public void onNoData(Object data) {
-                                        Log.d("", "");
-                                }
-                        });
-                } catch (Exception e) {
-                        e.printStackTrace();
-                }
-        }
 
-                                // adapter class
+        @Override
+        public void onResume(){
+           super.onResume();
+           numCount.setText(getCartCount());
+        }
+        // adapter class
         private class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
                 private JSONArray dataSource;
                 public CategoryAdapter(JSONArray listdata) {
