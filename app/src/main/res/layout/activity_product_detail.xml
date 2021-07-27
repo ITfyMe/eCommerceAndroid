@@ -88,24 +88,23 @@
         </RelativeLayout>
     </ScrollView>
     <TextView
+        android:id="@+id/priceText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
+        android:layout_marginLeft="33dp"
         android:layout_marginBottom="50dp"
-
         android:layout_alignParentBottom="true"
         android:fontFamily="@font/roboto_regular"
         android:layout_alignParentLeft="true"
         android:textSize="25dp" />
     <TextView
-        android:id="@+id/priceText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginBottom="50dp"
         android:layout_alignParentBottom="true"
         android:fontFamily="@font/roboto_regular"
-android:text="$"
+        android:text="$"
        android:layout_alignParentLeft="true"
         android:textSize="25dp" />
 

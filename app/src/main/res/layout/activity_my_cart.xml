@@ -86,7 +86,16 @@
             android:textColor="#121e31"
             android:textSize="20sp"
             android:textStyle="bold" />
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtPrice"
+            android:layout_marginLeft="70dp"
+            android:fontFamily="sans-serif-condensed-light"
+            android:paddingBottom="1dp"
+            android:text="$"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="17sp" />
         <TextView
             android:id="@+id/txtTotal"
             android:layout_width="wrap_content"
@@ -104,10 +113,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Continue"
+
+            app:icon="@drawable/ctn"
             android:fontFamily="@font/roboto_regular"
             android:layout_marginRight="30dp"
             android:layout_alignParentRight="true"
-            style="?attr/materialButtonOutlinedStyle"
             />
     </RelativeLayout>
 

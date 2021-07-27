@@ -46,7 +46,9 @@ public class SearchActivity extends BaseActivity {
     JSONArray searchArr;
     GridView gridView;
     String searchValue="";
-    private int pageNum=1;
+    private int pageNum=0;
+    private String totalRec = "";
+    private TextView txtTotalRec;
     SearchActivity.SearchAdapter searchAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +74,7 @@ public class SearchActivity extends BaseActivity {
 
     private void initDataSet(){
         searchArr = new JSONArray();
+        pageNum = 1;
     }
     //recycleView
     private void initListView(){
@@ -81,6 +84,17 @@ public class SearchActivity extends BaseActivity {
             LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
             recyclerView.setLayoutManager(manager);
             recyclerView.setAdapter(searchAdapter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    // getting next page data
+    private void getNextPage(int position) {
+        try {
+            if (position == searchArr.length() - 1) {
+                pageNum++;
+//                getSearchList();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -190,6 +204,7 @@ public class SearchActivity extends BaseActivity {
                         startActivity(intent);
                     }
                 });
+                getNextPage(position);
             } catch (Exception e) {
                 e.printStackTrace();
             }

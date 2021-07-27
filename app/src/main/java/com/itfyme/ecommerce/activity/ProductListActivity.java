@@ -46,9 +46,9 @@ public class ProductListActivity extends BaseActivity {
     TextView textView;
     JSONArray productArr;
     private int pageNum=0;
-    RelativeLayout cartLayout,searchLayout;
     private String totalRec = "";
     private TextView txtTotalRec;
+    RelativeLayout cartLayout,searchLayout;
     ProductAdapter productAdapter;
     String subCategoryId;
     TextView numCount;
