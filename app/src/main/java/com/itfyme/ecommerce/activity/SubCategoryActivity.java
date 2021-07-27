@@ -66,13 +66,8 @@ public class SubCategoryActivity extends BaseActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_keyboard_backspace_24);
             toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-            ActionBar actionBar;
-            actionBar = getSupportActionBar();
-            ColorDrawable colorDrawable
-                    = new ColorDrawable(Color.parseColor("#000000"));
-            // Set BackgroundDrawable
-            actionBar.setBackgroundDrawable(colorDrawable);
-
+            toolbar.setTitle("subCategory");
+            toolbar.setTitle("s");
             numCount=findViewById(R.id.count);
             setCount(numCount);
             cartLayout.setOnClickListener(new View.OnClickListener() {

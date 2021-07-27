@@ -1,12 +1,19 @@
 package com.itfyme.ecommerce.activity;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.transition.AutoTransition;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -40,7 +47,9 @@ public class PaymentActivity extends BaseActivity {
     RadioButton cod,debit,credit;
     Button continueBtn;
     JSONObject item;
-
+    ConstraintLayout viewAddress,viewAddress1;
+    Button arrowBtn,arrowBtn1;
+    CardView cardView,cardView1;
     //String CustomerAddressID,CustomerID,Add1,Add2,Add3,CityID,StateID,PinCode,id="1";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +58,18 @@ public class PaymentActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_keyboard_backspace_24);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        ActionBar actionBar;
+        actionBar = getSupportActionBar();
+        ColorDrawable colorDrawable
+                = new ColorDrawable(Color.parseColor("#000000"));
+        // Set BackgroundDrawable
+        actionBar.setBackgroundDrawable(colorDrawable);
         add1=findViewById(R.id.addr1);
         add2=findViewById(R.id.add2);
         add3=findViewById(R.id.addr3);
@@ -67,6 +85,27 @@ public class PaymentActivity extends BaseActivity {
         debit=findViewById(R.id.Debit);
         credit=findViewById(R.id.credit);
         txtTotal = findViewById(R.id.totalCost);
+        viewAddress = findViewById(R.id.viewAddress);
+        arrowBtn = findViewById(R.id.arrowBtn);
+        cardView = findViewById(R.id.cardView);
+
+        arrowBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (viewAddress.getVisibility()==View.GONE){
+                    TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
+                    viewAddress.setVisibility(View.VISIBLE);
+                    arrowBtn.setBackgroundResource(R.drawable.ic_keyboard_arrow_up_black_24dp);
+                }
+                else {
+                    TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
+                    viewAddress.setVisibility(View.GONE);
+                    arrowBtn.setBackgroundResource(R.drawable.ic_keyboard_arrow_down_black_24dp);
+                }
+            }
+        });
+
+
 
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,6 +204,9 @@ public class PaymentActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
+
+
+
 
     private void showTotal(){
         double total_sum=0;

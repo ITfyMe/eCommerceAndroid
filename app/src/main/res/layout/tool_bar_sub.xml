@@ -9,6 +9,7 @@
     android:outlineSpotShadowColor="@color/white"
     android:fitsSystemWindows="true"
     app:popupTheme="@color/white"
+    android:tooltipText=""
     app:layout_scrollFlags="scroll|enterAlways">
 
 <!--    <SearchView-->
