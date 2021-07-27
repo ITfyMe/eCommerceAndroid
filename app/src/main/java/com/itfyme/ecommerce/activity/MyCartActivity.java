@@ -69,10 +69,12 @@ public class MyCartActivity extends BaseActivity {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_my_cart);
-            spinner = (Spinner) findViewById(R.id.qtySpn);
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_keyboard_backspace_24);
             toolbar.setTitleTextColor(getResources().getColor(R.color.white));
             ActionBar actionBar;
             actionBar = getSupportActionBar();
@@ -81,7 +83,7 @@ public class MyCartActivity extends BaseActivity {
             // Set BackgroundDrawable
             actionBar.setBackgroundDrawable(colorDrawable);
 
-            toolbar.setNavigationOnClickListener(view -> onBackPressed());
+            spinner = (Spinner) findViewById(R.id.qtySpn);
             textPrice = findViewById(R.id.txtPrice);
             recyclerView = findViewById(R.id.cartList);
             cartEmptyLayout = findViewById(R.id.cartEmpty);
@@ -120,24 +122,11 @@ public class MyCartActivity extends BaseActivity {
             initListView();
             getCartList();
             generateItems();
-
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar, menu);
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
 
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public boolean onSupportNavigateUp() {

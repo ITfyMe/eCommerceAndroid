@@ -12,7 +12,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        layout="@layout/tool_bar_sub"
+        layout="@layout/blank_toolbar"
         android:layout_alignParentTop="true">
     </include>
     <RelativeLayout
