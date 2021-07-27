@@ -30,6 +30,7 @@
         </androidx.recyclerview.widget.RecyclerView>
         <LinearLayout
             android:id="@+id/cartEmpty"
+            android:layout_margin="0dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
