@@ -105,6 +105,11 @@ public class ProductListActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 
     private void showListView() {
         try {

@@ -9,7 +9,6 @@
 
     <include
         android:id="@+id/toolbar"
-
         layout="@layout/tool_bar_sub">
 
     </include>

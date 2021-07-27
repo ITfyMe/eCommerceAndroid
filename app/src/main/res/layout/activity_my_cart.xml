@@ -10,63 +10,71 @@
 
     <include
         android:id="@+id/toolbar"
-        layout="@layout/tool_bar_sub">
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        layout="@layout/tool_bar_sub"
+        android:layout_alignParentTop="true">
     </include>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_above="@+id/re">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cartList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:padding="2dp">
+        </androidx.recyclerview.widget.RecyclerView>
+        <LinearLayout
+            android:id="@+id/cartEmpty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@color/white"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtCartEmpty"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:text="Your Cart is Empty"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtCartEmpty"
+                android:textSize="30dp"
+                android:gravity="center"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:id="@+id/txtClickHere"
+                android:text="Click Here"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:layout_below="@id/txtCartEmpty"
+                android:textSize="20dp"
+                android:id="@+id/txtContine"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:text="To Continue Shopping"/>
+        </LinearLayout>
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/ty">
-
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_below="@+id/toolbar"
-            android:layout_height="wrap_content">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/cartList"
-                    android:layout_width="match_parent"
-                    android:layout_height="590dp"
-                    android:clipToPadding="false"
-                    android:layout_marginTop="65dp"
-                    android:overScrollMode="never"
-                    android:padding="2dp">
-                </androidx.recyclerview.widget.RecyclerView>
-                <TextView
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txtCartEmpty"
-                    android:text="youcart is empty"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="320dp"
-                    android:layout_below="@id/txtCartEmpty"
-                    android:gravity="center"
-                    android:id="@+id/txtClickHere"
-                    android:text="click here"/>
-            </RelativeLayout>
-
-        </androidx.core.widget.NestedScrollView>
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
         android:id="@+id/re"
-        android:layout_marginBottom="20dp"
-        android:layout_below="@+id/ty"
         android:background="#f5f5f5"
         android:layout_alignParentBottom="true">
 
         <TextView
             android:layout_marginTop="5dp"
-            android:layout_below="@+id/re"
             android:id="@+id/txtPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -88,9 +96,6 @@
             android:paddingBottom="1dp"
             android:textColor="@color/cardview_dark_background"
             android:textSize="17sp" />
-
-
-
         <Button
 
             android:layout_marginTop="5dp"
@@ -98,7 +103,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Continue"
-
             android:fontFamily="@font/roboto_regular"
             android:layout_marginRight="30dp"
             android:layout_alignParentRight="true"

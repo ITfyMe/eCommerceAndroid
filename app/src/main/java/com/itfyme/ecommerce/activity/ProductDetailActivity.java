@@ -124,6 +124,11 @@ public class ProductDetailActivity extends BaseActivity {
         super.onResume();
         numCount.setText(getCartCount());
     }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 
     private void addItemToCart(){
         /*

@@ -127,7 +127,6 @@ public class MyCartActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar, menu);
@@ -242,6 +241,7 @@ public class MyCartActivity extends BaseActivity {
     }
 
 
+
     private void updateCart(JSONObject item) {
         try {
             HashMap<String, String> params = new HashMap<>();
@@ -334,6 +334,7 @@ public class MyCartActivity extends BaseActivity {
                         mycartArr.remove(position) ;
                         myCartAdapter.notifyDataSetChanged();
                         Delete(obj);
+                        cartDelete(position);
                     }
                 });
             } catch (Exception e) {
